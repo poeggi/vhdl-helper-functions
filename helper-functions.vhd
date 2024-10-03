@@ -8,40 +8,43 @@
 --
 ---------------------------------------------------------------------
 
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-
 package functions is
-
 	function in_simulation return boolean;
-	function sim_syn_var(SIM_VAR: natural; SYN_VAR: natural) return natural;
+	function sim_syn_var(SIM_VAR: natural; SYN_VAR: natural)
+			return natural;
 
-	function resize_msb(V: std_logic_vector; LEN: natural) return std_logic_vector;
+	function resize_msb(V: std_logic_vector; LEN: natural)
+			return std_logic_vector;
 	function resize_msb(V: unsigned; LEN: natural) return unsigned;
 
 	function To_StdLogicVector(NUMBER: natural; LENGTH: natural)
-									return std_logic_vector;
+			return std_logic_vector;
 
 	function or_reduce(V: std_logic_vector)  return std_ulogic;
 	function and_reduce(V: std_logic_vector) return std_ulogic;
 	function xor_reduce(V: std_logic_vector) return std_ulogic;
 
-	function slv(Len: natural; LEVEL: std_ulogic :='0') return std_logic_vector;
-	function trim_right(UNTRIMMED: std_logic_vector; N: natural) return std_logic_vector;
+	function slv(Len: natural; LEVEL: std_ulogic :='0')
+			return std_logic_vector;
+	function trim_right(UNTRIMMED: std_logic_vector; N: natural)
+			return std_logic_vector;
 
 	function log2_ceil(N: natural) return natural;
 
 	function is_multiple(V:std_logic_vector; N:natural) return boolean;
-	function is_multiple(V:unsigned;		 N:natural) return boolean;
+	function is_multiple(V:unsigned; N:natural) return boolean;
 
-	-- an unconstrained array (unsigned) is "not allowed in this context" :-(
-	type array_of_integer	   is array ( natural range <> ) of integer;
+	-- unconstrained array (unsigned) is "not allowed in this context",
+	-- hence this solution instead
+	type array_of_integer is array ( natural range <> ) of integer;
 	function bubble_sort(UNSORTED: array_of_integer; ORDER: bit)
-							return array_of_integer;
-	function bubble_sort(UNSORTED: array_of_integer) return array_of_integer;
+			return array_of_integer;
+	function bubble_sort(UNSORTED: array_of_integer)
+			return array_of_integer;
 	
 	function max3(A:integer; B:integer; C:integer) return integer;
 
@@ -62,7 +65,8 @@ package body functions is
 
 
 	-- returns value SIM_VAR when in simulation, SYN_VAR during synthesis
-	function sim_syn_var(SIM_VAR: natural; SYN_VAR: natural) return natural is
+	function sim_syn_var(SIM_VAR: natural; SYN_VAR: natural)
+			return natural is
 	begin
 		if ( in_simulation ) then
 			return SIM_VAR;
@@ -78,15 +82,13 @@ package body functions is
 	function resize_msb(V: std_logic_vector; LEN: natural)
 				return std_logic_vector is
 	begin
-
 		return std_logic_vector(resize_msb(unsigned(v), LEN));
 	end function;
 
 	function resize_msb(V: unsigned; LEN: natural)
 				return unsigned is
-
 		variable RET : unsigned(LEN-1 downto 0)
-					 := (others => '0');
+				:= (others => '0');
 	begin
 		if ( V'length >= LEN ) then
 			RET := V((V'length-1) downto (V'length-LEN));
@@ -111,7 +113,6 @@ package body functions is
 	function or_reduce(V: std_logic_vector) return std_ulogic is
 		variable temp : std_ulogic := '0';
 	begin
-
 		for I in V'range loop
 		   temp := temp or V(I);
 		end loop;
@@ -125,7 +126,6 @@ package body functions is
 	function and_reduce(V: std_logic_vector) return std_ulogic is
 		variable temp : std_ulogic := '1';
 	begin
-
 		for I in V'range loop
 		   temp := temp and V(I);
 		end loop;
@@ -138,7 +138,6 @@ package body functions is
 	function xor_reduce(V: std_logic_vector) return std_ulogic is
 		variable temp : std_ulogic := '0';
 	begin
-
 		for I in V'range loop
 		   temp := temp xor V(I);
 		end loop;
