@@ -12,7 +12,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package functions is
+package helper-functions is
 	function in_simulation return boolean;
 	function sim_syn_var(SIM_VAR: natural; SYN_VAR: natural)
 			return natural;
@@ -51,7 +51,7 @@ package functions is
 end package;
 
 
-package body functions is
+package body helper-functions is
 
 	-- helper to be able to tell if we are doing simulation or synthesis
 	function in_simulation return boolean is
@@ -267,4 +267,4 @@ package body functions is
 		return TEMP;
 	end function;
 	
-end functions;
+end helper-functions;
